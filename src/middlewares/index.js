@@ -16,11 +16,16 @@ const middlewares = [
   disableEventLoop(),
   jsonBodyParser(),
   db(),
-  redisMiddleware(),
   logger(),
   http(),
   jwt(),
 ];
+
+// Set redis middleware to optional
+const { REDIS_ACTIVE = 0 } = process.env;
+if (REDIS_ACTIVE === 1) {
+  middlewares.push(redisMiddleware());
+}
 
 const functions = (fns = []) => {
   let functionsToExport = {};

@@ -30,11 +30,12 @@ const getUserById = async (event) => {
     if (error) {
       return { error: true, statusCode: 400, message: error.details[0].message };
     }
-    const data = exclude((await db.user.findUnique({ where: { id: value.id } })), ['password']);
+    // const data = exclude((await db.user.findUnique({ where: { id: value.id } })), ['password']);
+    const data = await db.user.findUnique({ where: { id: value.id } });
+    logger.info(data);
     if (!data) {
       return { error: true, statusCode: 404, message: 'User not found' };
     }
-    logger.info(data);
     response = { data };
   } catch (error) {
     logger.error(error);

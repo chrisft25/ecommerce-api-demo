@@ -7,7 +7,9 @@ module.exports = {
         return e;
       });
     }
-    args.map((i) => delete data[i]);
+    if (typeof data === 'object') {
+      args.map((i) => delete data[i]);
+    }
     return data;
   },
 };

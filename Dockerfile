@@ -1,10 +1,9 @@
 FROM node:14
 
 WORKDIR /app
-ARG DATABASE_URL=
 ADD package.json package-lock.json ./
-COPY . .
+ADD . .
 
 RUN npm install --silent
 RUN npm i -g serverless --silent
-CMD ["npm","run","dev"]
+ENTRYPOINT [ "npm","run","docker" ]

@@ -15,6 +15,7 @@ module.exports = () => {
   };
   const databaseMiddlewareAfter = async (req) => {
     req.event.db.$disconnect();
+    logger.info('Database disconnected.');
   };
 
   return {

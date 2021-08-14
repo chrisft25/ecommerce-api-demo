@@ -13,7 +13,8 @@
     "db:introspect": "dotenv -e .env -- npx prisma introspect",
     "db:migrate": "dotenv -e .env -- npx prisma migrate dev",
     "db:deploy": "dotenv -e .env -- npx prisma migrate deploy",
-    "db:sync": "npm run db:introspect && npm run db:migrate"
+    "db:sync": "npm run db:introspect && npm run db:migrate",
+    "docker": "npm run db:deploy && npm run db:generate && npm run dev"
   },
   "repository": {
     "type": "git",
