@@ -16,6 +16,11 @@ provider:
 plugins:
   - serverless-offline
 
+package:
+  patterns:
+    - '!node_modules/.prisma/client/query-engine-*'
+    - 'node_modules/.prisma/client/query-engine-rhel-*'
+    
 functions:
   auth:
     handler: src/authHandler.auth
