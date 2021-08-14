@@ -37,6 +37,7 @@ jobs:
           cache: 'npm'
       - run: npm ci
       - run: npm install -g serverless
-      - run: npm run db:deploy
       - run: sed -i '/profile:/d' serverless.yml
+      - run: npm run db:deploy
+      - run: npm run db:generate
       - run: serverless deploy -s prod
