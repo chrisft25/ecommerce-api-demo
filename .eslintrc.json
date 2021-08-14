@@ -13,6 +13,7 @@
     "rules": {
         // "no-console": "off",
         // "semi": "off",
-        // "linebreak-style": "off"
+        // "linebreak-style": "off",
+        "no-extend-native": "off"
     }
 }

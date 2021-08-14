@@ -53,7 +53,7 @@ module.exports = () => {
         body: { error: true, message: 'An error has occurred.' },
       };
     }
-
+    delete response.body.statusCode;
     const finalResponse = {
       ...response,
       headers: headersResponse,

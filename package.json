@@ -37,6 +37,7 @@
     "@middy/core": "^2.5.1",
     "@middy/http-json-body-parser": "^2.5.1",
     "@prisma/client": "^2.29.1",
+    "bcryptjs": "^2.4.3",
     "chalk": "^4.1.2",
     "jest": "^27.0.6",
     "joi": "^17.4.2",

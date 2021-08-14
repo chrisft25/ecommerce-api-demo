@@ -20,10 +20,12 @@ package:
   patterns:
     - '!node_modules/.prisma/client/query-engine-*'
     - 'node_modules/.prisma/client/query-engine-rhel-*'
-    
+
 functions:
+
   auth:
     handler: src/authHandler.auth
+
   getUsers:
     handler: src/controllers/userHandler.getUsers
     description: Get all users
@@ -31,4 +33,49 @@ functions:
       - http: 
           path: /users
           method: GET
+          cors: true
+
+  getUserById:
+    handler: src/controllers/userHandler.getUserById
+    description: Get user by id
+    events: 
+      - http: 
+          path: /users/{id}
+          method: GET
+          cors: true
+        
+  createUser:
+    handler: src/controllers/userHandler.createUser
+    description: Create users
+    events: 
+      - http: 
+          path: /users
+          method: POST
+          cors: true
+
+  login:
+    handler: src/controllers/userHandler.login
+    description: Login
+    events: 
+      - http: 
+          path: /login
+          method: POST
+          cors: true
+
+  updateUser:
+    handler: src/controllers/userHandler.updateUser
+    description: Update User
+    events: 
+      - http: 
+          path: /users/{id}
+          method: PUT
+          cors: true
+  
+  deleteUser:
+    handler: src/controllers/userHandler.deleteUser
+    description: Delete User
+    events: 
+      - http: 
+          path: /users/{id}
+          method: DELETE
           cors: true
