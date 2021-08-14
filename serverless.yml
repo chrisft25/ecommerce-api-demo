@@ -12,6 +12,8 @@ provider:
     REDIS_HOST: ${env:REDIS_HOST}
     REDIS_PASS: ${env:REDIS_PASS}
     REDIS_PORT: ${env:REDIS_PORT}
+    JWT_KEY: ${env:JWT_KEY}
+    JWT_EXPIRES: ${env:JWT_EXPIRES}
 
 plugins:
   - serverless-offline

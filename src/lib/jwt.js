@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 const logger = require('./logger')({ name: 'JWT Module' });
 
-const { JWT_KEY = 'abc', JWT_EXPIRES = 5000 } = process.env;
+const { JWT_KEY, JWT_EXPIRES } = process.env;
 
 const signJWT = (payload) => {
   try {
