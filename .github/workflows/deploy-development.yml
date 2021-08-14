@@ -1,0 +1,49 @@
+name: Deploy to development
+on:
+  push:
+    branches:
+      - develop
+jobs:
+  Testing:
+    env:
+      DATABASE_URL: ${{secrets.DATABASE_URL}}
+      REDIS_HOST: ${{secrets.DEV_REDIS_HOST}}
+      REDIS_PASS: ${{secrets.DEV_REDIS_PASS}}
+      REDIS_PORT: ${{secrets.DEV_REDIS_PORT}}
+      REDIS_ACTIVE: ${{secrets.DEV_REDIS_ACTIVE}}
+      JWT_KEY: ${{secrets.DEV_JWT_KEY}}
+      JWT_EXPIRES: ${{secrets.DEV_JWT_EXPIRES}}
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-node@v2
+      with:
+        node-version: '14'
+        cache: 'npm'
+    - run: npm install
+    - run: npm test
+  Deploy:
+    env:
+      AWS_ACCESS_KEY_ID: ${{secrets.AWS_ACCESS_KEY_ID}}
+      AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET_ACCESS_KEY}}
+      DATABASE_URL: ${{secrets.DEV_DATABASE_URL}}
+      REDIS_HOST: ${{secrets.DEV_REDIS_HOST}}
+      REDIS_PASS: ${{secrets.DEV_REDIS_PASS}}
+      REDIS_PORT: ${{secrets.DEV_REDIS_PORT}}
+      REDIS_ACTIVE: ${{secrets.DEV_REDIS_ACTIVE}}
+      JWT_KEY: ${{secrets.DEV_JWT_KEY}}
+      JWT_EXPIRES: ${{secrets.DEV_JWT_EXPIRES}}
+    needs: Testing
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+          cache: 'npm'
+      - run: npm ci
+      - run: npm install -g serverless
+      - run: sed -i '/profile:/d' serverless.yml
+      - run: npm run db:deploy
+      - run: npm run db:generate
+      - run: serverless deploy -s dev

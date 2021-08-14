@@ -1,0 +1,32 @@
+version: '3'
+services:
+  redis:
+    image: redis:3.2-alpine
+    volumes:
+      - './data/redis-data:/data'
+    ports:
+      - 6379:6379
+  db:
+    image: mariadb:10.6.1
+    restart: always
+    volumes:
+      - './data/mysql-db:/var/lib/mysql'
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+      MYSQL_DATABASE: demo
+    ports:
+      - 3306:3306
+  backend:
+    env_file: .env
+    build: .
+    ports:
+      - 3000:3000
+    depends_on:
+      - db
+      - redis
+    tty: true
+    stdin_open: true
+    tmpfs:
+      - /tmp
