@@ -1,0 +1,68 @@
+{
+  "name": "ecommerce-api-demo",
+  "version": "1.0.0",
+  "description": "API demo",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "dev": "serverless offline --host 0.0.0.0",
+    "test": "dotenv -e .env.test jest --coverage",
+    "db:generate": "dotenv -e .env -- npx prisma generate",
+    "db:introspect": "dotenv -e .env -- npx prisma introspect",
+    "db:migrate": "dotenv -e .env -- npx prisma migrate dev",
+    "db:deploy": "dotenv -e .env -- npx prisma migrate deploy",
+    "db:sync": "npm run db:introspect && npm run db:migrate"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chrisft25/ecommerce-api-demo.git"
+  },
+  "author": "Christopher Fuentes",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/chrisft25/ecommerce-api-demo/issues"
+  },
+  "homepage": "https://github.com/chrisft25/ecommerce-api-demo#readme",
+  "devDependencies": {
+    "dotenv-cli": "^4.0.0",
+    "eslint": "^7.32.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-plugin-import": "^2.24.0",
+    "prisma": "^2.29.1",
+    "serverless-offline": "^8.0.0"
+  },
+  "dependencies": {
+    "@middy/core": "^2.5.1",
+    "@middy/http-json-body-parser": "^2.5.1",
+    "@prisma/client": "^2.29.1",
+    "chalk": "^4.1.2",
+    "jest": "^27.0.6",
+    "joi": "^17.4.2",
+    "jsonwebtoken": "^8.5.1",
+    "lodash": "^4.17.21",
+    "redis": "^3.1.2"
+  },
+  "standard": {
+    "globals": [
+      "describe",
+      "test",
+      "expect",
+      "beforeAll",
+      "afterAll",
+      "jest",
+      "beforeEach"
+    ]
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "js",
+      "json",
+      "jsx",
+      "node"
+    ],
+    "transformIgnorePatterns": [],
+    "testEnvironment": "node"
+  }
+}

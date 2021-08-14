@@ -1,0 +1,29 @@
+service: ecommerce-api
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  stage: ${opt:stage, 'dev'}
+  profile: chris
+  region: us-east-1
+  memorySize: 128
+  environment:
+    DATABASE_URL: ${env:DATABASE_URL}
+    REDIS_HOST: ${env:REDIS_HOST}
+    REDIS_PASS: ${env:REDIS_PASS}
+    REDIS_PORT: ${env:REDIS_PORT}
+
+plugins:
+  - serverless-offline
+
+functions:
+  auth:
+    handler: src/authHandler.auth
+  getUsers:
+    handler: src/controllers/userHandler.getUsers
+    description: Get all users
+    events: 
+      - http: 
+          path: /users
+          method: GET
+          cors: true

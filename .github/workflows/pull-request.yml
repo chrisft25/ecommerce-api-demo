@@ -1,0 +1,24 @@
+name: Pull Request Flow
+
+on:
+    pull_request:
+        branches:
+            - master
+            - develop
+
+jobs:
+    Testing:
+      env:
+        DATABASE_URL: ${{secrets.DATABASE_URL}}
+        REDIS_HOST: ${{secrets.REDIS_HOST}}
+        REDIS_PASS: ${{secrets.REDIS_PASS}}
+        REDIS_PORT: ${{secrets.REDIS_PORT}}
+      runs-on: ubuntu-latest
+      steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+          cache: 'npm'
+      - run: npm install
+      - run: npm test
