@@ -12,7 +12,7 @@ const disableEventLoop = () => ({
   },
 });
 
-const middlewares = [
+let middlewares = [
   http(),
   disableEventLoop(),
   jsonBodyParser(),
@@ -23,8 +23,9 @@ const middlewares = [
 
 // Set redis middleware to optional
 const { REDIS_ACTIVE = 0 } = process.env;
+
 if (REDIS_ACTIVE === 1) {
-  middlewares.push(redisMiddleware());
+  middlewares = [redisMiddleware(), ...middlewares];
 }
 
 const functions = (fns = []) => {

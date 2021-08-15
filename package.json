@@ -33,6 +33,7 @@
     "eslint-plugin-import": "^2.24.0",
     "faker": "^5.5.3",
     "prisma": "^2.29.1",
+    "serverless-dotenv-plugin": "^3.9.0",
     "serverless-offline": "^8.0.0"
   },
   "dependencies": {

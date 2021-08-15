@@ -7,17 +7,21 @@ provider:
   profile: chris
   region: us-east-1
   memorySize: 128
+
+  #Setting variables for CI/CD pipeline.
   environment:
     DATABASE_URL: ${env:DATABASE_URL}
     REDIS_HOST: ${env:REDIS_HOST}
     REDIS_PASS: ${env:REDIS_PASS}
     REDIS_PORT: ${env:REDIS_PORT}
     REDIS_ACTIVE: ${env:REDIS_ACTIVE}
+    REDIS_TTL: ${env:REDIS_TTL}
     JWT_KEY: ${env:JWT_KEY}
     JWT_EXPIRES: ${env:JWT_EXPIRES}
 
 plugins:
   - serverless-offline
+  - serverless-dotenv-plugin
 
 package:
   patterns:
@@ -27,7 +31,7 @@ package:
 functions:
 
   auth:
-    handler: src/authHandler.auth
+    handler: src/controllers/authController.auth
 
   getUsers:
     handler: src/controllers/userHandler.getUsers
@@ -37,6 +41,7 @@ functions:
           path: /users
           method: GET
           cors: true
+          authorizer: auth
 
   getUserById:
     handler: src/controllers/userHandler.getUserById
@@ -46,6 +51,7 @@ functions:
           path: /users/{id}
           method: GET
           cors: true
+          authorizer: auth
         
   createUser:
     handler: src/controllers/userHandler.createUser
@@ -73,6 +79,7 @@ functions:
           path: /users/{id}
           method: PUT
           cors: true
+          authorizer: auth
   
   deleteUser:
     handler: src/controllers/userHandler.deleteUser
@@ -82,3 +89,27 @@ functions:
           path: /users/{id}
           method: DELETE
           cors: true
+          authorizer: auth
+
+resources:
+  Resources:
+    GatewayResponse:
+      Type: 'AWS::ApiGateway::GatewayResponse'
+      Properties:
+        ResponseParameters:
+          gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
+          gatewayresponse.header.Access-Control-Allow-Headers: "'*'"
+        ResponseType: EXPIRED_TOKEN
+        RestApiId:
+          Ref: 'ApiGatewayRestApi'
+        StatusCode: '401'
+    AuthFailureGatewayResponse:
+      Type: 'AWS::ApiGateway::GatewayResponse'
+      Properties:
+        ResponseParameters:
+          gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
+          gatewayresponse.header.Access-Control-Allow-Headers: "'*'"
+        ResponseType: UNAUTHORIZED
+        RestApiId:
+          Ref: 'ApiGatewayRestApi'
+        StatusCode: '401'

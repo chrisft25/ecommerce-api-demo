@@ -32,8 +32,8 @@
 - [X] Estrategia de despliegue a development y production.
 - [X] Crear workflows de Github Actions para CI/CD.
 - [X] Log management (Cloudwatch).
-- [ ] Implementación de Redis.
-- [ ] Autenticación por JWT.
+- [X] Implementación de estrategia de caché con Redis.
+- [X] Autenticación por JWT.
 - [X] CRUD de usuarios.
 - [ ] CRUD de categorías.
 - [ ] CRUD de direcciones de usuario.

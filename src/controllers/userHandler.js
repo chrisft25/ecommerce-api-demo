@@ -7,7 +7,6 @@ const jwt = require('../lib/jwt');
 const getUsers = async (event) => {
   const { db, logger } = event;
   let { response } = event;
-
   try {
     const data = exclude((await db.user.findMany()), ['password']);
     logger.info(data);
@@ -21,7 +20,7 @@ const getUsers = async (event) => {
 const getUserById = async (event) => {
   const { db, logger, pathParameters } = event;
   let { response } = event;
-
+  event.cache = true; // Use redis for cache
   try {
     const schema = joi.object({
       id: joi.number().required(),

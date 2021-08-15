@@ -14,6 +14,7 @@ jobs:
         REDIS_PASS: ${{secrets.DEV_REDIS_PASS}}
         REDIS_PORT: ${{secrets.DEV_REDIS_PORT}}
         REDIS_ACTIVE: ${{secrets.DEV_REDIS_ACTIVE}}
+        REDIS_TTL: ${{secrets.DEV_REDIS_TTL}}
         JWT_KEY: ${{secrets.DEV_JWT_KEY}}
         JWT_EXPIRES: ${{secrets.DEV_JWT_EXPIRES}}
       runs-on: ubuntu-latest
