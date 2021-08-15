@@ -31,11 +31,13 @@ const getUserById = async (event) => {
       return { error: true, statusCode: 400, message: error.details[0].message };
     }
     // const data = exclude((await db.user.findUnique({ where: { id: value.id } })), ['password']);
-    const data = await db.user.findUnique({ where: { id: value.id } });
-    logger.info(data);
+    let data = await db.user.findUnique({ where: { id: value.id } });
     if (!data) {
+      logger.info(`User not found with id: ${value.id}`);
       return { error: true, statusCode: 404, message: 'User not found' };
     }
+    data = exclude(data, ['password']);
+    logger.info('User found:', data);
     response = { data };
   } catch (error) {
     logger.error(error);
@@ -46,7 +48,6 @@ const getUserById = async (event) => {
 const createUser = async (event) => {
   const { db, logger, body } = event;
   let { response } = event;
-
   try {
     const schema = joi.object({
       email: joi.string().email().required(),
@@ -57,6 +58,7 @@ const createUser = async (event) => {
     if (error) {
       return { error: true, statusCode: 400, message: error.details[0].message };
     }
+
     const salt = bcrypt.genSaltSync(10);
     const hash = bcrypt.hashSync(value.password, salt);
     value.password = hash;
@@ -64,16 +66,21 @@ const createUser = async (event) => {
     if (!data) {
       return { error: true, statusCode: 400, message: 'There was an error creating user. Try again.' };
     }
+    logger.info('User created:', data);
     response = { data };
   } catch (error) {
-    logger.error(JSON.stringify(error), error);
     const errorCodes = {
       P2002: {
         statusCode: 405,
         message: 'Email is already registered',
       },
     };
-    response = { error: true, ...errorCodes[error.code] };
+    if (errorCodes[error.code]) {
+      response = { error: true, ...errorCodes[error.code] };
+      logger.error(errorCodes[error.code]);
+    } else {
+      logger.error(JSON.stringify(error), error);
+    }
   }
   return response;
 };

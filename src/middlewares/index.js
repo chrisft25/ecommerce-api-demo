@@ -13,12 +13,12 @@ const disableEventLoop = () => ({
 });
 
 const middlewares = [
+  http(),
   disableEventLoop(),
   jsonBodyParser(),
-  db(),
   logger(),
-  http(),
   jwt(),
+  db(),
 ];
 
 // Set redis middleware to optional
