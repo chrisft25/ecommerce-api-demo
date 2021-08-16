@@ -23,11 +23,10 @@ let middlewares = [
 
 // Set redis middleware to optional
 const { REDIS_ACTIVE = 0 } = process.env;
-
-if (REDIS_ACTIVE === 1) {
+if (REDIS_ACTIVE && parseInt(REDIS_ACTIVE, 10) === 1) {
   middlewares = [redisMiddleware(), ...middlewares];
 }
-
+console.log(middlewares);
 const functions = (fns = []) => {
   let functionsToExport = {};
   fns.forEach((e) => {

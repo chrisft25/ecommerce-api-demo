@@ -60,8 +60,7 @@ module.exports = () => {
       body: JSON.stringify(response.body),
     };
     const { REDIS_ACTIVE = 0 } = process.env;
-    if (REDIS_ACTIVE === 1 && event.cache) {
-      logger.info('Vamos a ir a redis');
+    if (REDIS_ACTIVE && parseInt(REDIS_ACTIVE, 10) === 1 && event.cache) {
       event.redisResponse = finalResponse;
     } else {
       logger.info('Lambda Response', finalResponse);

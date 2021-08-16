@@ -33,7 +33,6 @@ module.exports.auth = (event, context, callback) => {
     return callback('Unauthorized');
   }
   const { JWT_KEY } = process.env;
-  logger.log(process.env);
   try {
     jwt.verify(tokenValue, JWT_KEY, (verifyError, decoded) => {
       if (verifyError) {
