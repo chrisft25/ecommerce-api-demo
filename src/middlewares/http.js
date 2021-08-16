@@ -16,7 +16,7 @@ module.exports = () => {
       body, queryStringParameters, pathParameters, headers,
     });
   };
-  const httpMiddlewareAfter = async ({ response: resp }) => {
+  const httpMiddlewareAfter = async ({ event, response: resp }) => {
     let response = {};
 
     if (resp) {
@@ -59,8 +59,13 @@ module.exports = () => {
       headers: headersResponse,
       body: JSON.stringify(response.body),
     };
-    logger.info('Lambda Response', finalResponse);
-    return finalResponse;
+    const { REDIS_ACTIVE = 0 } = process.env;
+    if (REDIS_ACTIVE && parseInt(REDIS_ACTIVE, 10) === 1 && event.cache) {
+      event.redisResponse = finalResponse;
+    } else {
+      logger.info('Lambda Response', finalResponse);
+      return finalResponse;
+    }
   };
 
   return {
