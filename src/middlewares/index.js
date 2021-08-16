@@ -26,7 +26,6 @@ const { REDIS_ACTIVE = 0 } = process.env;
 if (REDIS_ACTIVE && parseInt(REDIS_ACTIVE, 10) === 1) {
   middlewares = [redisMiddleware(), ...middlewares];
 }
-console.log(middlewares);
 const functions = (fns = []) => {
   let functionsToExport = {};
   fns.forEach((e) => {

@@ -8,7 +8,7 @@
   },
   "scripts": {
     "dev": "serverless offline --host 0.0.0.0",
-    "test": "REDIS_ACTIVE=0 jest --coverage",
+    "test": "jest --coverage",
     "db:generate": "dotenv -e .env -- npx prisma generate",
     "db:introspect": "dotenv -e .env -- npx prisma introspect",
     "db:migrate": "dotenv -e .env -- npx prisma migrate dev",

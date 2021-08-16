@@ -63,6 +63,7 @@ module.exports = () => {
     if (REDIS_ACTIVE && parseInt(REDIS_ACTIVE, 10) === 1 && event.cache) {
       event.redisResponse = finalResponse;
     } else {
+      event.redis.quit();
       logger.info('Lambda Response', finalResponse);
       return finalResponse;
     }
