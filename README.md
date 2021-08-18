@@ -38,12 +38,13 @@
 - [ ] CRUD de categorías.
 - [ ] CRUD de direcciones de usuario.
 - [ ] CRUD de productos.
-- [ ] Especificar cobertura con ISO 3166 de nombres de países en productos.
-- [ ] Especificar contenido por geolocalización.
-- [ ] Especificar precios por geolocalización.
+- [X] Especificar cobertura con ISO 3166 de nombres de países en productos.
+- [X] Especificar contenido por geolocalización.
+- [X] Especificar precios por geolocalización.
 - [ ] Crear reviews en productos.
-- [ ] Identificación de geolocalización por IP.
-- [ ] Filtros de productos por geolocalización por IP o dirección default de usuario.
+- [X] Identificación de geolocalización por IP.
+- [X] Filtros de productos por geolocalización por IP.
 - [ ] Filtros de productos por precio.
-- [ ] Ordenar productos por promedio de reviews y geolocalización.
+- [X] Ordenar productos por promedio de reviews y geolocalización.
+- [ ] Mocks en tests.
 - [ ] Test unitarios.

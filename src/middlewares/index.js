@@ -5,6 +5,7 @@ const redisMiddleware = require('./redis');
 const db = require('./db');
 const logger = require('./logger');
 const jwt = require('./jwt');
+const geo = require('./geo');
 
 const disableEventLoop = () => ({
   before: async (req) => {
@@ -18,6 +19,7 @@ let middlewares = [
   jsonBodyParser(),
   logger(),
   jwt(),
+  geo(),
   db(),
 ];
 
@@ -26,7 +28,6 @@ const { REDIS_ACTIVE = 0 } = process.env;
 if (REDIS_ACTIVE && parseInt(REDIS_ACTIVE, 10) === 1) {
   middlewares = [redisMiddleware(), ...middlewares];
 }
-console.log(middlewares);
 const functions = (fns = []) => {
   let functionsToExport = {};
   fns.forEach((e) => {

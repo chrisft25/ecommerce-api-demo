@@ -34,7 +34,7 @@ functions:
     handler: src/controllers/authController.auth
 
   getUsers:
-    handler: src/controllers/userHandler.getUsers
+    handler: src/controllers/userController.getUsers
     description: Get all users
     events: 
       - http: 
@@ -44,17 +44,17 @@ functions:
           authorizer: auth
 
   getUserById:
-    handler: src/controllers/userHandler.getUserById
+    handler: src/controllers/userController.getUserById
     description: Get user by id
     events: 
       - http: 
           path: /users/{id}
           method: GET
           cors: true
-          authorizer: auth
+
         
   createUser:
-    handler: src/controllers/userHandler.createUser
+    handler: src/controllers/userController.createUser
     description: Create users
     events: 
       - http: 
@@ -63,7 +63,7 @@ functions:
           cors: true
 
   login:
-    handler: src/controllers/userHandler.login
+    handler: src/controllers/userController.login
     description: Login
     events: 
       - http: 
@@ -72,7 +72,7 @@ functions:
           cors: true
 
   updateUser:
-    handler: src/controllers/userHandler.updateUser
+    handler: src/controllers/userController.updateUser
     description: Update User
     events: 
       - http: 
@@ -82,7 +82,7 @@ functions:
           authorizer: auth
   
   deleteUser:
-    handler: src/controllers/userHandler.deleteUser
+    handler: src/controllers/userController.deleteUser
     description: Delete User
     events: 
       - http: 
@@ -90,6 +90,16 @@ functions:
           method: DELETE
           cors: true
           authorizer: auth
+
+  getProducts:
+    handler: src/controllers/productController.getProducts
+    description: Get Products
+    events: 
+      - http: 
+          path: /products
+          method: GET
+          cors: true
+
 
 resources:
   Resources:
