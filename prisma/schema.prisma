@@ -64,15 +64,17 @@ model images_products {
 }
 
 model products {
-  id               Int                @id @unique
-  name             String?            @db.VarChar(100)
-  id_category      Int?
-  price            Decimal?           @db.Decimal(10, 2)
-  coverage         String?            @db.Text
-  description      String?            @db.Text
-  categories       categories?        @relation(fields: [id_category], references: [id])
-  images_products  images_products[]
-  reviews_products reviews_products[]
+  id                    Int                     @id @unique
+  name                  String?                 @db.VarChar(100)
+  id_category           Int?
+  price                 Decimal?                @db.Decimal(10, 2)
+  coverage              String?                 @db.Text
+  description           String?                 @db.Text
+  categories            categories?             @relation(fields: [id_category], references: [id])
+  descriptions_products descriptions_products[]
+  images_products       images_products[]
+  prices_products       prices_products[]
+  reviews_products      reviews_products[]
 
   @@index([id_category], name: "fk_products_categories")
 }
@@ -97,4 +99,24 @@ model reviews_products {
 
   @@index([id_product], name: "fk_reviews_products_products")
   @@index([id_user], name: "fk_reviews_products_user")
+}
+
+model descriptions_products {
+  id          Int       @id
+  id_product  Int?
+  coverage    String?   @db.Text
+  description String?   @db.Text
+  products    products? @relation(fields: [id_product], references: [id])
+
+  @@index([id_product], name: "fk_descriptions_products")
+}
+
+model prices_products {
+  id         Int       @id
+  id_product Int?
+  coverage   String?   @db.Text
+  price      Decimal?  @db.Decimal(10, 2)
+  products   products? @relation(fields: [id_product], references: [id])
+
+  @@index([id_product], name: "fk_prices_products_products")
 }
