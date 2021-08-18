@@ -1,16 +1,100 @@
 generator client {
-    provider      = "prisma-client-js"
-    binaryTargets = ["native", "rhel-openssl-1.0.x"]
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "rhel-openssl-1.0.x"]
 }
 
 datasource db {
-    provider = "mysql"
-    url      = env("DATABASE_URL")
+  provider = "mysql"
+  url      = env("DATABASE_URL")
 }
 
 model User {
-    id       Int     @id @default(autoincrement())
-    email    String  @unique
-    name     String?
-    password String
+  id               Int                @id @default(autoincrement())
+  email            String             @unique
+  name             String?
+  password         String
+  reviews_products reviews_products[]
+}
+
+model addresses {
+  id           Int      @id
+  street       String?  @db.Text
+  street_2     String?  @db.Text
+  id_city      Int?
+  reference    String?  @db.VarChar(255)
+  zip_code     Int?
+  latitude     String?  @db.VarChar(45)
+  longitude    String?  @db.VarChar(45)
+  user_default Boolean?
+  cities       cities?  @relation(fields: [id_city], references: [id])
+
+  @@index([id_city], name: "fk_addresses_cities")
+}
+
+model categories {
+  id       Int        @id
+  name     String?    @db.VarChar(100)
+  products products[]
+}
+
+model cities {
+  id        Int         @id
+  name      String?     @db.VarChar(100)
+  id_state  Int?
+  states    states?     @relation(fields: [id_state], references: [id])
+  addresses addresses[]
+
+  @@index([id_state], name: "fk_cities_states")
+}
+
+model countries {
+  id       Int      @id
+  name     String?  @db.VarChar(100)
+  iso_code String?  @db.VarChar(45)
+  states   states[]
+}
+
+model images_products {
+  id         Int       @id
+  id_product Int?
+  url_image  String?   @db.Text
+  products   products? @relation(fields: [id_product], references: [id])
+
+  @@index([id_product], name: "fk_images_products_products")
+}
+
+model products {
+  id               Int                @id @unique
+  name             String?            @db.VarChar(100)
+  id_category      Int?
+  price            Decimal?           @db.Decimal(10, 2)
+  coverage         String?            @db.Text
+  description      String?            @db.Text
+  categories       categories?        @relation(fields: [id_category], references: [id])
+  images_products  images_products[]
+  reviews_products reviews_products[]
+
+  @@index([id_category], name: "fk_products_categories")
+}
+
+model states {
+  id         Int        @id
+  name       String?    @db.VarChar(100)
+  id_country Int?
+  countries  countries? @relation(fields: [id_country], references: [id])
+  cities     cities[]
+
+  @@index([id_country], name: "fk_states_countries")
+}
+
+model reviews_products {
+  id         Int       @id
+  id_product Int?
+  id_user    Int?
+  review     Decimal?  @db.Decimal(10, 2)
+  products   products? @relation(fields: [id_product], references: [id])
+  User       User?     @relation(fields: [id_user], references: [id])
+
+  @@index([id_product], name: "fk_reviews_products_products")
+  @@index([id_user], name: "fk_reviews_products_user")
 }
