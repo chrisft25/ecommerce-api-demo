@@ -5,6 +5,7 @@ const redisMiddleware = require('./redis');
 const db = require('./db');
 const logger = require('./logger');
 const jwt = require('./jwt');
+const geo = require('./geo');
 
 const disableEventLoop = () => ({
   before: async (req) => {
@@ -18,6 +19,7 @@ let middlewares = [
   jsonBodyParser(),
   logger(),
   jwt(),
+  geo(),
   db(),
 ];
 

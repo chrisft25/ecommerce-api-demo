@@ -1,5 +1,5 @@
 const joi = require('joi');
-const bcrypt = require('bcryptjs');
+const crypto = require('crypto-js');
 const { functions } = require('../middlewares');
 const { exclude } = require('../lib/tools');
 const jwt = require('../lib/jwt');
@@ -58,8 +58,7 @@ const createUser = async (event) => {
       return { error: true, statusCode: 400, message: error.details[0].message };
     }
 
-    const salt = bcrypt.genSaltSync(10);
-    const hash = bcrypt.hashSync(value.password, salt);
+    const hash = crypto.SHA256(value.password).toString();
     value.password = hash;
     const data = exclude((await db.user.create({ data: value })), ['password']);
     if (!data) {
@@ -101,8 +100,7 @@ const login = async (event) => {
     const data = await db.user.findUnique({ where: { email: value.email } });
     logger.info('User', data);
     if (data) {
-      const verification = bcrypt.compareSync(value.password, data.password);
-      valid = verification;
+      valid = (crypto.SHA256(value.password).toString() === data.password);
     }
     if (!valid) {
       response = { error: true, statusCode: 401, message: 'Email and/or password are incorrect' };
@@ -136,8 +134,7 @@ const updateUser = async (event) => {
     }
     const newUser = { ...value };
     if (value.password) {
-      const salt = bcrypt.genSaltSync(10);
-      const hash = bcrypt.hashSync(value.password, salt);
+      const hash = crypto.SHA256(value.password).toString();
       newUser.password = hash;
     } else {
       delete newUser.password;
